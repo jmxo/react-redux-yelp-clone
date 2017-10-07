@@ -15,7 +15,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Home from 'containers/Home/Loadable';
-import Map from 'containers/Map/Loadable';
+import Map from 'containers/Map';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {

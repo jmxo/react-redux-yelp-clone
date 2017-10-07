@@ -9,15 +9,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Map as GoogleMap, GoogleApiWrapper } from 'google-maps-react';
+import { Map as GoogleMap, GoogleApiWrapper, Marker } from 'google-maps-react';
 import styled from 'styled-components';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
-import Map from 'containers/Map/Loadable';
+import Map from 'containers/Map';
 import { selectPlaces, selectPagination } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -44,6 +44,11 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
     this.props.onReady(mapProps, map, google);
   }
 
+  onMarkerClick = (item) => {
+    const { place } = item;
+    this.props.history.push(`/map/detail/${place.place_id}`);
+  }
+
   render() {
     const { places } = this.props;
     return (
@@ -55,7 +60,19 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
         <Header />
         <Sidebar places={places} />
         <Content>
-          <Route path="/map" render={() => <Map google={this.props.google} />} />
+          <Route
+            path="/map"
+            render={() =>
+              (<Map
+                places={places}
+                google={this.props.google}
+                map={this.props.map}
+                onMarkerClick={this.onMarkerClick}
+              />
+              )
+            }
+          />
+          <Route path="/detail/:placeId" component={Detail} />
         </Content>
       </StyledMap>
     );
@@ -66,7 +83,7 @@ Home.propTypes = {
   dispatch: PropTypes.func.isRequired,
   onReady: PropTypes.func.isRequired,
   google: PropTypes.any,
-  places: PropTypes.array,
+  // places: PropTypes.array,
   pagination: PropTypes.any,
 };
 
@@ -99,5 +116,6 @@ export default compose(
   withGoogleApi,
   withReducer,
   withSaga,
+  withRouter,
   withConnect,
 )(Home);
