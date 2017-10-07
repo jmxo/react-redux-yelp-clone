@@ -72,6 +72,7 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
               )
             }
           />
+          <Route path="/detail/:placeId" component={Detail} />
         </Content>
       </StyledMap>
     );
