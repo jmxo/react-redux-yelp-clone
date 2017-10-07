@@ -25,25 +25,22 @@ const StyledLink = styled(Link)`
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: 1px;
-
+  color: #fff;
   line-height: 40px;
   h1 { font-size: 28px; }
 `;
 
-const Section = styled.section`
-  position: absolute;
-  top: 0px;
-  right: 25px;
-`;
+// const Section = styled.section`
+//   position: absolute;
+//   top: 0px;
+//   right: 25px;
+// `;
 
 
 function Header() {
   return (
     <Wrapper>
       <StyledLink to="/"><h1>React Redux Yelp Clone</h1></StyledLink>
-      <Section>
-      Header
-      </Section>
     </Wrapper>
   );
 }
