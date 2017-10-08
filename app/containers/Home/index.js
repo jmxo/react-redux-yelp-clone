@@ -7,18 +7,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Map as GoogleMap, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map as GoogleMap, GoogleApiWrapper } from 'google-maps-react';
 import styled from 'styled-components';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import Map from 'containers/Map';
-import { selectPlaces, selectPagination } from './selectors';
+import { selectPlaces } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { searchNearby } from './actions';
@@ -46,7 +45,7 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
 
   onMarkerClick = (item) => {
     const { place } = item;
-    this.props.history.push(`/map/detail/${place.place_id}`);
+    this.props.history.push(`/detail/${place.place_id}`);
   }
 
   render() {
@@ -60,6 +59,7 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
         <Header />
         <Sidebar places={places} />
         <Content>
+          {/* <Redirect path="/" to="/map" /> */}
           <Route
             path="/map"
             render={() =>
@@ -72,7 +72,7 @@ export class Home extends React.Component { // eslint-disable-line react/prefer-
               )
             }
           />
-          <Route path="/detail/:placeId" component={Detail} />
+          <Route path="/detail/:placeId" render={(props) => <span>{`Detail Page: ${props.match.params.placeId}`}</span>} />
         </Content>
       </StyledMap>
     );
@@ -83,14 +83,9 @@ Home.propTypes = {
   dispatch: PropTypes.func.isRequired,
   onReady: PropTypes.func.isRequired,
   google: PropTypes.any,
-  // places: PropTypes.array,
+  places: PropTypes.any,
   pagination: PropTypes.any,
 };
-
-// const mapStateToProps = createStructuredSelector({
-//   places: selectPlaces,
-//   pagination: selectPagination,
-// });
 
 const mapStateToProps = (state) => ({
   places: selectPlaces(state),

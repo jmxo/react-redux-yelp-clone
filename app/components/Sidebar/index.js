@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import Item from 'components/Item';
 
@@ -40,21 +41,23 @@ const Listing = styled.div`
 
 class Sidebar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { places } = this.props;
+    const { places, history } = this.props;
     return (
       <Wrapper>
         <Heading>
           <H1>Restaurants</H1>
         </Heading>
         <Listing>
-            {places.map((place) => (
-              <Item
-                key={place.id}
-                place={place}
-                onClick={() => {}}
-              />
+          {places.map((place) => (
+            <Item
+              key={place.id}
+              place={place}
+              onClick={() => {
+                history.push(`/detail/${place.id}`);
+              }}
+            />
             ))}
-          </Listing>
+        </Listing>
       </Wrapper>
     );
   }
@@ -64,4 +67,4 @@ Sidebar.propTypes = {
 
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);

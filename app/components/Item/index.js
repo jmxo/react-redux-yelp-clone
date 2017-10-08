@@ -18,13 +18,14 @@ const Wrapper = styled.div`
   &:last-child {
     border-bottom: none;
   }
+  &:hover {
+    color: #48b5e9;
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h4`
   flex: 2;
-  &:hover {
-    color: $highlight;
-  }
 `;
 
 const StyledRating = styled(Rating)`
@@ -33,11 +34,12 @@ const StyledRating = styled(Rating)`
 `;
 
 
+// I believe the onClick div should be replaced with a react-router Link
 class Item extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { place } = this.props;
+    const { place, onClick } = this.props;
     return (
-      <Wrapper>
+      <Wrapper onClick={onClick}>
         <Title>{place.name}</Title>
         <StyledRating percentage={place.rating / 5} />
       </Wrapper>
